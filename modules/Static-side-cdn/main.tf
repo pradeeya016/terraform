@@ -6,8 +6,9 @@ locals {
 #S3 Bucket Resources
 
 resource "aws_s3_bucket" "checkpoint_bucket" {
-  bucket = var.bucket_name
-  tags   = var.tags
+  bucket        = var.bucket_name
+  force_destroy = true
+  tags          = var.tags
 }
 
 #CloudFront Origin Access Control (OAC)
@@ -22,42 +23,33 @@ resource "aws_cloudfront_origin_access_control" "checkpoint_oac" {
 
 #IAM Policy Document for CloudFront/S3 Integration
 
-# This policy allows CloudFront to read objects from S3 ONLY if the request comes from OAC cloudfront.
-data "aws_iam_policy_document" "policy_for_s3_bucket" {
-  statement {
-    sid    = "AllowCloudFrontServicePrincipalReadOnly"
-    effect = "Allow"
+# Get current AWS account ID
+data "aws_caller_identity" "current" {}
 
-    principals {
-      type        = "Service"
-      identifiers = ["cloudfront.amazonaws.com"]
-    }
-
-    actions = [
-      "s3:GetObject",
-    ]
-
-    resources = [
-      "${aws_s3_bucket.checkpoint_bucket.arn}/*",
-    ]
-
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
-      # The distribution ID is known only after the distribution is created.
-      # This dependency forces CloudFront to create the ARN correctly.
-      values   = [aws_cloudfront_distribution.checkpoint_s3_distribution.arn]
-    }
-  }
-}
-
-#S3 Bucket Policy Attachment
-
+# S3 Bucket Policy that allows CloudFront OAC access
 resource "aws_s3_bucket_policy" "checkpoint_s3_bucket_policy" {
   bucket = aws_s3_bucket.checkpoint_bucket.id
-  policy = data.aws_iam_policy_document.policy_for_s3_bucket.json
 
-  # Dependency to ensure the OAC and Bucket are ready before applying the policy
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowCloudFrontServicePrincipalReadOnly"
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action = "s3:GetObject"
+        Resource = "${aws_s3_bucket.checkpoint_bucket.arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.checkpoint_s3_distribution.arn
+          }
+        }
+      }
+    ]
+  })
+
   depends_on = [
     aws_s3_bucket.checkpoint_bucket,
     aws_cloudfront_distribution.checkpoint_s3_distribution
@@ -104,5 +96,7 @@ resource "aws_cloudfront_distribution" "checkpoint_s3_distribution" {
     cloudfront_default_certificate = true
   }
 
-  price_class = "PriceClass_100" 
+  price_class = "PriceClass_100"
+
+  tags = var.tags
 }
