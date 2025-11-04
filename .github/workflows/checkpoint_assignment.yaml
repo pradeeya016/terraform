@@ -23,7 +23,7 @@ jobs:
     - name: Debug paths
       run: |
           pwd
-          ls -R terraform
+          ls -R
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v3
