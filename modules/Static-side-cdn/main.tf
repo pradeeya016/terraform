@@ -81,8 +81,17 @@ resource "aws_cloudfront_distribution" "checkpoint_s3_distribution" {
     target_origin_id       = local.s3_origin_id
     viewer_protocol_policy = "redirect-to-https"
 
-    # Using managed cache policy - cannot use forwarded_values with cache_policy_id
-    cache_policy_id = "658327ea-f89d-4c51-8b74-4b534e819b58" # Managed-CachingOptimized
+    # Use forwarded_values instead of cache_policy_id for compatibility
+    forwarded_values {
+      query_string = false
+      cookies {
+        forward = "none"
+      }
+    }
+
+    min_ttl     = 0
+    default_ttl = 3600
+    max_ttl     = 86400
   }
 
   restrictions {
