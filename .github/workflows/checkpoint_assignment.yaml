@@ -49,5 +49,5 @@ jobs:
     steps:
        - uses: actions/checkout@v4
        - name: 'Running dummyjson script'
-          run: 'python3 ./checkpoint/dummyjson.py'
-          working-directory: ./checkpoint
+         run: python3 ./checkpoint/dummyjson.py
+         working-directory: ./checkpoint
