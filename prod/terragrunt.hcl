@@ -15,7 +15,7 @@ remote_state {
     key            = "prod/${path_relative_to_include()}/terraform.tfstate"
     region         = "eu-north-1"
     encrypt        = true
-    dynamodb_table = "terraform-lock-table"
+    dynamodb_table = "terraform-lock"
   }
 
   generate = {
