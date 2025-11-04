@@ -1,4 +1,4 @@
-# --- CloudFront S3 Module (outputs.tf) ---
+#CloudFront S3 Module.
 
 output "bucket_id" {
   description = "The name (id) of the S3 bucket."

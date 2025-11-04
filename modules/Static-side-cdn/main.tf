@@ -31,8 +31,7 @@ resource "aws_cloudfront_origin_access_control" "checkpoint_oac" {
 
 #IAM Policy Document for CloudFront/S3 Integration
 
-# This policy allows CloudFront to read objects from S3 ONLY if the request
-# comes from the associated distribution's SourceArn (using the OAC).
+# This policy allows CloudFront to read objects from S3 ONLY if the request comes from OAC cloudfront.
 data "aws_iam_policy_document" "policy_for_s3_bucket" {
   statement {
     sid    = "AllowCloudFrontServicePrincipalReadOnly"

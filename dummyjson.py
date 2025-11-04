@@ -1,4 +1,7 @@
 #!/bin/python
+
+## script to fetch data from https://dummyjson.com/products and filter products ###
+## with price and create a file and upload to aws s3 bucket.###
 import requests
 import json
 import subprocess
