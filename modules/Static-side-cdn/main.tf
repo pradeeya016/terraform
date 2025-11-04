@@ -10,15 +10,6 @@ resource "aws_s3_bucket" "checkpoint_bucket" {
   tags   = var.tags
 }
 
-resource "aws_s3_bucket_public_access_block" "checkpoint_block_public_access" {
-  bucket = aws_s3_bucket.checkpoint_bucket.id
-  # Block all public access for security
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
-
 #CloudFront Origin Access Control (OAC)
 
 resource "aws_cloudfront_origin_access_control" "checkpoint_oac" {
@@ -90,14 +81,8 @@ resource "aws_cloudfront_distribution" "checkpoint_s3_distribution" {
     target_origin_id       = local.s3_origin_id
     viewer_protocol_policy = "redirect-to-https"
 
-    forwarded_values {
-      query_string = false
-      cookies {
-        forward = "none"
-      }
-    }
-    # Managed-CachingOptimized
-    cache_policy_id = "658327ea-f89d-4c51-8b74-4b534e819b58" 
+    # Using managed cache policy - cannot use forwarded_values with cache_policy_id
+    cache_policy_id = "658327ea-f89d-4c51-8b74-4b534e819b58" # Managed-CachingOptimized
   }
 
   restrictions {
