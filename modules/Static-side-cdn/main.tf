@@ -4,7 +4,6 @@ locals {
 }
 
 #S3 Bucket Resources
-
 resource "aws_s3_bucket" "checkpoint_bucket" {
   bucket        = var.bucket_name
   force_destroy = true
@@ -12,7 +11,6 @@ resource "aws_s3_bucket" "checkpoint_bucket" {
 }
 
 #CloudFront Origin Access Control (OAC)
-
 resource "aws_cloudfront_origin_access_control" "checkpoint_oac" {
   name                              = "oac-${var.bucket_name}"
   description                       = "OAC for S3 bucket ${var.bucket_name}"
@@ -20,8 +18,6 @@ resource "aws_cloudfront_origin_access_control" "checkpoint_oac" {
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
 }
-
-#IAM Policy Document for CloudFront/S3 Integration
 
 # Get current AWS account ID
 data "aws_caller_identity" "current" {}
@@ -76,7 +72,7 @@ resource "aws_cloudfront_distribution" "checkpoint_s3_distribution" {
 
     # Use forwarded_values instead of cache_policy_id for compatibility
     forwarded_values {
-      query_string = true   # Allow query parameters for dynamic content
+      query_string = true  
       cookies {
         forward = "none"
       }

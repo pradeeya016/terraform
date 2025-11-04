@@ -12,3 +12,4 @@ aws dynamodb create-table --table-name terraform-lock --attribute-definitions \ 
 
 5. GitHub Actions CI/CD Pipeline, once the codes is pushed to main branch, it pull the code to the runon machine ubuntu (default give by github action). Using marketplace modules like configure-aws-credentia, terraform and checkout and installing terragrun. 
 
+URL to access the data: https://d3vff7dg601drr.cloudfront.net/new_products.json
