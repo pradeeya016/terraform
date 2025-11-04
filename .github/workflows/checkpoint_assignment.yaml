@@ -45,18 +45,18 @@ jobs:
 
     - name: terragrunt init
       run: terragrunt init
-      working-directory: prod
+      working-directory: prod/product-site
 
 
     - name: terragrunt plan
       run: terragrunt plan 
-      working-directory: prod
+      working-directory: prod/product-site
 
 
     - name: terragrunt apply
       id: terragrunt-apply
       run: terragrunt apply -auto-approve
-      working-directory: prod
+      working-directory: prod/product-site
 
 
   run-script:

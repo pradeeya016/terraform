@@ -1,6 +1,6 @@
 # Include the root configuration for remote state and providers
 include "root" {
-  path = "../../terragrunt.hcl"
+  path = "../terragrunt.hcl"
 }
 
 # Specify the module to be used
