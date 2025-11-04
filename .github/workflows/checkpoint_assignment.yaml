@@ -32,16 +32,16 @@ jobs:
 
     - name: Terraform init
       run: terraform init
-      working-directory: ./checkpoint/prod
+      working-directory: ./prod
 
     - name: Terraform plan
       run: terraform plan 
-      working-directory: ./checkpoint/prod
+      working-directory: ./prod
 
     - name: Terraform apply
       id: terraform-apply
       run: terraform apply -auto-approve
-      working-directory: ./checkpoint/prod
+      working-directory: ./prod
 
   run-script:
     runs-on: ubuntu-latest
@@ -49,5 +49,5 @@ jobs:
     steps:
        - uses: actions/checkout@v4
        - name: 'Running dummyjson script'
-         run: python3 ./checkpoint/dummyjson.py
-         working-directory: ./checkpoint
+         run: python3 ./dummyjson.py
+         working-directory: .
