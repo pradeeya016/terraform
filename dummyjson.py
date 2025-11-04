@@ -19,6 +19,6 @@ if 'products' in content:
 else:
     print("No products found.")
 
-command =  "aws s3 cp new_products s3://checkpoint-assignment-prod/"
+command =  "aws s3 cp new_products.json s3://checkpoint-assignment-prod/"
 subprocess.run(command, shell=True)
 print("File uploaded to S3 bucket successfully.")
