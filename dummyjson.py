@@ -13,7 +13,7 @@ if 'products' in content:
     for product in content['products']:
         if product.get('price', 0) >= 100:
             data = (json.dumps(product, indent=4))
-            with open ('new_products', 'a') as f:
+            with open ('new_products.json', 'a') as f:
                 f.write(data)
 
 else:

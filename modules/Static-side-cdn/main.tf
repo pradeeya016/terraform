@@ -64,8 +64,9 @@ resource "aws_cloudfront_distribution" "checkpoint_s3_distribution" {
     origin_id                = local.s3_origin_id
   }
 
-  enabled         = true
-  is_ipv6_enabled = true
+  enabled             = true
+  is_ipv6_enabled     = true
+  default_root_object = "new_products"
   
   default_cache_behavior {
     allowed_methods        = ["GET", "HEAD"]
@@ -75,7 +76,7 @@ resource "aws_cloudfront_distribution" "checkpoint_s3_distribution" {
 
     # Use forwarded_values instead of cache_policy_id for compatibility
     forwarded_values {
-      query_string = false
+      query_string = true   # Allow query parameters for dynamic content
       cookies {
         forward = "none"
       }
