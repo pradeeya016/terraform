@@ -1,16 +1,16 @@
 # Include the root configuration for remote state and providers
 include "root" {
-  path = "../../terragrunt.hcl
+  path = "../../terragrunt.hcl"
 }
 
 # Specify the module to be used
 terraform {
-  source = "../../modules/static-site-cdn"
+  source = "../../modules/Static-side-cdn"
 }
 
 # Define the variable values for this specific deployment
 inputs = {
-  bucket_name = "checkpoint-assisment-prod
+  bucket_name = "checkpoint-assignment-prod"
   tags = {
     Name      = "Productcloudfront"
     Owner     = "pradeep yadav"

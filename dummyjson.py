@@ -1,6 +1,7 @@
 #!/bin/python
 import requests
 import json
+import subprocess
 
 jason_data = requests.get('https://dummyjson.com/products')
 content = jason_data.json()
@@ -11,3 +12,10 @@ if 'products' in content:
             data = (json.dumps(product, indent=4))
             with open ('new_products', 'a') as f:
                 f.write(data)
+
+else:
+    print("No products found.")
+
+command =  "aws s3 cp new_products s3://checkpoint-assignment-prod/"
+subprocess.run(command, shell=True)
+print("File uploaded to S3 bucket successfully.")
